@@ -32,7 +32,15 @@ jobs:
 
     - name: Move Signoz Helm Charts to charts folder
       run: |
-        rsync -a loki-stack/ charts/
+        rsync -av loki-stack/ charts/    
+
+    - name: Move Signoz Helm Charts to charts folder
+      run: |
+        rsync -av loki-stack/ charts/
+
+    - name: Get Rid of Unnecessary Files
+      run: |
+        rm -rf loki-stack        
 
     - name: Install yq
       run: |
