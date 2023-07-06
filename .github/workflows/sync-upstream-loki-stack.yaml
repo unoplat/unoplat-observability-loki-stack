@@ -30,13 +30,20 @@ jobs:
       run: |
         helm fetch --untar grafana/loki-stack
 
-    - name: Move Signoz Helm Charts to charts folder
+    - name: Move loki-stack Helm Charts to charts folder
       run: |
-        rsync -av loki-stack/ charts/
+        rsync -av loki-stack/ charts/loki-stack/
+
+    - name: Keep it for debug
+      run: |
+        git status     
 
     - name: Get Rid of Unnecessary Files
       run: |
         rm -rf loki-stack        
+    - name: Keep it for debug
+      run: |
+        git status     
 
     - name: Install yq
       run: |
@@ -55,6 +62,10 @@ jobs:
         format: sarif
         outputFile: helm_results
         files: "charts/*.yaml"
+
+    - name: Keep it for debug
+      run: |
+        git status 
 
     - name: Upload Kubescape scan results to Github Code Scanning
       uses: github/codeql-action/upload-sarif@v2
