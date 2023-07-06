@@ -85,7 +85,12 @@ jobs:
         git add charts/*
         git add reports/*
         git commit -m "added charts and scan results"
-        git push origin upstream-sync
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
