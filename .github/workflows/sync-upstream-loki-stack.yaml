@@ -61,7 +61,7 @@ jobs:
       with:
         format: sarif
         outputFile: helm_results
-        files: "charts/*.yaml"
+        files: "charts/loki-stack"
 
     - name: Keep it for debug
       run: |
