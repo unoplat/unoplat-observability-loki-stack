@@ -28,12 +28,12 @@ jobs:
 
     - name: fetch upstream latest charts
       run: |
-        LATEST_VERSION=$(helm search repo grafana/loki-stack --devel --versions | grep loki-stack | head -1 | awk '{print $2}')
+        LATEST_VERSION=$(helm search repo grafana/loki-stack --versions | grep loki-stack | head -1 | awk '{print $2}')
         echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
         
     - name: Compare versions and create new branch if necessary
       run: |
-        CURRENT_VERSION=$(cat charts/upstream_version.json | jq -r '.["loki-stack"]')
+        CURRENT_VERSION=$(cat charts/upstream-version.json | jq -r '.["loki-stack"]')
         if [ "$LATEST_VERSION" != "$CURRENT_VERSION" ]; then
           git checkout -b upstream-sync-$LATEST_VERSION develop
           rm -rf charts/loki-stack/
