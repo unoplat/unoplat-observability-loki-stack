@@ -13,7 +13,7 @@ jobs:
     - name: Checkout our repository
       uses: actions/checkout@v2
       with:
-        ref: upstream-sync
+        ref: develop
 
     - name: Set up Helm
       uses: azure/setup-helm@v3
@@ -26,59 +26,44 @@ jobs:
 
         helm repo update
 
-    - name: Fetch Signoz Helm chart
+    - name: fetch upstream latest charts
       run: |
-        helm fetch --untar grafana/loki-stack
-
-    - name: Move loki-stack Helm Charts to charts folder
+        LATEST_VERSION=$(helm search repo grafana/loki-stack --devel --versions | grep loki-stack | head -1 | awk '{print $2}')
+        echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
+        
+    - name: Compare versions and create new branch if necessary
       run: |
-        rsync -av loki-stack/ charts/loki-stack/
-
-    - name: Keep it for debug
-      run: |
-        git status     
-
-    - name: Get Rid of Unnecessary Files
-      run: |
-        rm -rf loki-stack        
-    - name: Keep it for debug
-      run: |
-        git status     
-
-    - name: Install yq
-      run: |
-        sudo snap install yq
-
-    - name: Login to Github Container Registry
-      uses: docker/login-action@v2
-      with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-    - uses: kubescape/github-action@main
+        CURRENT_VERSION=$(cat charts/upstream_version.json | jq -r '.["loki-stack"]')
+        if [ "$LATEST_VERSION" != "$CURRENT_VERSION" ]; then
+          git checkout -b upstream-sync-$LATEST_VERSION develop
+          rm -rf charts/loki-stack/
+          helm fetch --untar --untardir charts/ grafana/loki-stack --version $LATEST_VERSION
+          echo "::set-output name=new-branch-created::true"
+        fi    
+    - name: Helm Chart Scan
+      if: steps.compare-versions.outputs.new-branch-created == 'true'
+      uses: kubescape/github-action@main  
       continue-on-error: true
       with:
         format: sarif
         outputFile: helm_results
         files: "charts/loki-stack"
 
-    - name: Keep it for debug
-      run: |
-        git status 
-
     - name: Upload Kubescape scan results to Github Code Scanning
+      if: steps.compare-versions.outputs.new-branch-created == 'true'
       uses: github/codeql-action/upload-sarif@v2
       with:
         sarif_file: helm_results.sarif  
         category: "Kubescape scan for Helm Charts"
 
     - name: Moving scan results to appropriate folders
+      if: steps.compare-versions.outputs.new-branch-created == 'true'
       run: |
         echo "Moving helm_results.sarif to reports/kubernetes-nsa-cisa-yaml-scan-analysis/helm_results_${TIMESTAMP}.sarif"
         mv -f "helm_results.sarif" "reports/kubernetes-nsa-cisa-yaml-scan-analysis/helm_results_${TIMESTAMP}.sarif"
 
     - name: Push changes to our repository
+      if: steps.compare-versions.outputs.new-branch-created == 'true'
       run: |
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
@@ -87,16 +72,17 @@ jobs:
         git commit -m "added charts and scan results"
 
     - name: Push changes
+      if: steps.compare-versions.outputs.new-branch-created == 'true'
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: upstream-sync
+        branch: upstream-sync-$LATEST_VERSION
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
-        title: 'Sync with Upstream'
+        title: 'Sync with Upstream: ${{ env.LATEST_VERSION }}'
         commit-message: 'Changes Detected'
-        branch: 'upstream-sync'
+        branch: 'upstream-sync-$LATEST_VERSION'
         base: 'develop'
         token: ${{ secrets.GITHUB_TOKEN }}  
