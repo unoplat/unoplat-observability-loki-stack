@@ -32,7 +32,7 @@ jobs:
 
     - name: Developer Values YAML
       run: |
-        cp -f charts/loki-stack/environments/dev/values.yaml charts/signoz/
+        cp -f charts/loki-stack/environments/dev/values.yaml charts/loki-stack/
 
     - name: Save current changes for client-cluster-values.yaml
       run: |
