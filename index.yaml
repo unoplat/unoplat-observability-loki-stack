@@ -1,0 +1,50 @@
+apiVersion: v1
+entries:
+  unoplat-observability-loki-stack:
+  - apiVersion: v1
+    appVersion: v2.6.1
+    created: "2023-07-12T14:36:27.476456386Z"
+    dependencies:
+    - condition: loki.enabled
+      name: loki
+      repository: https://grafana.github.io/helm-charts
+      version: ^2.15.2
+    - condition: promtail.enabled
+      name: promtail
+      repository: https://grafana.github.io/helm-charts
+      version: ^6.7.4
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://grafana.github.io/helm-charts
+      version: ^2.3.0
+    - condition: grafana.enabled
+      name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: ~6.43.0
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: ~15.5.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: ~7.17.1
+    - condition: logstash.enabled
+      name: logstash
+      repository: https://helm.elastic.co
+      version: ~7.17.1
+    description: 'Loki: like Prometheus, but for logs.'
+    digest: db116e8c285bcbbdf9f656c0792e92c60c247fbf65c621d6b27751ab0797b5d4
+    home: https://grafana.com/loki
+    icon: https://raw.githubusercontent.com/grafana/loki/master/docs/sources/logo.png
+    kubeVersion: ^1.10.0-0
+    maintainers:
+    - email: lokiproject@googlegroups.com
+      name: Loki Maintainers
+    name: unoplat-observability-loki-stack
+    sources:
+    - https://github.com/grafana/loki
+    urls:
+    - https://github.com/unoplat/unoplat-observability-loki-stack/releases/download/unoplat-observability-loki-stack-2.10.10/unoplat-observability-loki-stack-2.10.10.tgz
+    version: 2.10.10
+generated: "2023-07-12T14:36:27.476465185Z"
