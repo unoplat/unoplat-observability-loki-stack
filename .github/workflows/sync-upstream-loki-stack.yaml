@@ -79,7 +79,7 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: upstream-sync-${LATEST_VERSION}
+        branch: upstream-sync-${{ env.LATEST_VERSION }}
 
     - name: Create Pull Request
       if: env.NEW_BRANCH_CREATED == 'true'
@@ -87,6 +87,6 @@ jobs:
       with:
         title: 'Sync with Upstream: ${{ env.LATEST_VERSION }}'
         commit-message: 'Changes Detected'
-        branch: 'upstream-sync-${LATEST_VERSION}'
+        branch: 'upstream-sync-${{ env.LATEST_VERSION }}'
         base: 'develop'
         token: ${{ secrets.GITHUB_TOKEN }}  
