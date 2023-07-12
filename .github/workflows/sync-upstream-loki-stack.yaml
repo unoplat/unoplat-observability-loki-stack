@@ -62,6 +62,7 @@ jobs:
     - name: Moving scan results to appropriate folders
       if: env.NEW_BRANCH_CREATED == 'true'
       run: |
+        TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
         echo "Moving helm_results.sarif to reports/kubernetes-nsa-cisa-yaml-scan-analysis/helm_results_${TIMESTAMP}.sarif"
         mv -f "helm_results.sarif" "reports/kubernetes-nsa-cisa-yaml-scan-analysis/helm_results_${TIMESTAMP}.sarif"
 
