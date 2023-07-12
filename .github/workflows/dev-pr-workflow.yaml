@@ -36,7 +36,7 @@ jobs:
       with:
         format: sarif
         outputFile: helm_results
-        files: "charts/*.yaml"          
+        files: "charts/loki-stack"         
 
     - name: Upload Kubescape scan results to Github Code Scanning
       uses: github/codeql-action/upload-sarif@v2
@@ -46,6 +46,7 @@ jobs:
 
     - name: Moving scan results to appropriate folders
       run: |
+        TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
         echo "Moving helm_results.sarif to reports/kubernetes-nsa-cisa-yaml-scan-analysis/helm_results_${TIMESTAMP}.sarif"
         mv -f "helm_results.sarif" "reports/kubernetes-nsa-cisa-yaml-scan-analysis/helm_results_${TIMESTAMP}.sarif"
 

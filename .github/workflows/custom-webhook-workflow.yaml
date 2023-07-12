@@ -43,5 +43,5 @@ jobs:
 
     - name: Install latest pre-release version
       run: |
-        version=$(helm search repo unoplat-observability-loki-stack/signoz --versions --devel --output json | jq -r '.[0].version')
-        helm upgrade --install unoplat-observability-loki-stack --namespace unoplat-observability unoplat-observability-loki-stack/loki-stack --version $version --devel --create-namespace 
+        version=$(helm search repo unoplat-observability-loki-stack/unoplat-observability-loki-stack --versions --devel --output json | jq -r '.[0].version')
+        helm upgrade --install unoplat-observability-loki-stack --namespace unoplat-observability unoplat-observability-loki-stack/unoplat-observability-loki-stack --version $version --devel --create-namespace 
