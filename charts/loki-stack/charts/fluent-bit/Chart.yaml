@@ -12,4 +12,4 @@ maintainers:
 name: fluent-bit
 sources:
 - https://github.com/grafana/loki
-version: 2.5.0
+version: 2.6.0
