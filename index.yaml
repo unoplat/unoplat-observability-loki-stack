@@ -3,6 +3,52 @@ entries:
   unoplat-observability-loki-stack:
   - apiVersion: v1
     appVersion: v2.6.1
+    created: "2023-12-25T06:48:24.194887044Z"
+    dependencies:
+    - condition: loki.enabled
+      name: loki
+      repository: https://grafana.github.io/helm-charts
+      version: ^2.15.2
+    - condition: promtail.enabled
+      name: promtail
+      repository: https://grafana.github.io/helm-charts
+      version: ^6.7.4
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://grafana.github.io/helm-charts
+      version: ^2.3.0
+    - condition: grafana.enabled
+      name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: ~6.43.0
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: ~15.5.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: ~7.17.1
+    - condition: logstash.enabled
+      name: logstash
+      repository: https://helm.elastic.co
+      version: ~7.17.1
+    description: 'Loki: like Prometheus, but for logs.'
+    digest: f0ca780841dd2a5562e111df756e28defc46793e5ce17d1b0e8a710fc7467e99
+    home: https://grafana.com/loki
+    icon: https://raw.githubusercontent.com/grafana/loki/master/docs/sources/logo.png
+    kubeVersion: ^1.10.0-0
+    maintainers:
+    - email: lokiproject@googlegroups.com
+      name: Loki Maintainers
+    name: unoplat-observability-loki-stack
+    sources:
+    - https://github.com/grafana/loki
+    urls:
+    - https://github.com/unoplat/unoplat-observability-loki-stack/releases/download/unoplat-observability-loki-stack-2.10.11-dev/unoplat-observability-loki-stack-2.10.11-dev.tgz
+    version: 2.10.11-dev
+  - apiVersion: v1
+    appVersion: v2.6.1
     created: "2023-07-12T14:36:27.476456386Z"
     dependencies:
     - condition: loki.enabled
@@ -47,4 +93,4 @@ entries:
     urls:
     - https://github.com/unoplat/unoplat-observability-loki-stack/releases/download/unoplat-observability-loki-stack-2.10.10/unoplat-observability-loki-stack-2.10.10.tgz
     version: 2.10.10
-generated: "2023-07-12T14:36:27.476465185Z"
+generated: "2023-12-25T06:48:24.194898385Z"
