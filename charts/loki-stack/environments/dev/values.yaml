@@ -25,7 +25,7 @@ loki:
     enabled: true
     accessModes:
       - ReadWriteOnce
-    size: 30Gi
+    size: 5Gi
     labels: {}
     annotations: {}
   resources:
