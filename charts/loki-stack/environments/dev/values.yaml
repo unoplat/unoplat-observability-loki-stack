@@ -20,7 +20,7 @@ loki:
   datasource:
     jsonData: "{}"
     uid: ""
-  replicas: 3
+  replicas: 1
   persistence:
     enabled: true
     accessModes:
@@ -30,11 +30,11 @@ loki:
     annotations: {}
   resources:
     limits:
-      cpu: "2"
-      memory: "3Gi"
-    requests:
       cpu: "1"
       memory: "2Gi"
+    requests:
+      cpu: "1"
+      memory: "1Gi"
   affinity:
   podAntiAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
@@ -94,14 +94,26 @@ loki:
           annotations:
             summary: Loki request latency (instance {{ $labels.instance }})
             description: "The {{ $labels.job }} {{ $labels.route }} is experiencing {{ printf \"%.2f\" $value }}s 99th percentile latency\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  config:
+    ruler:
+      ring:
+        kvstore:
+          store: inmemory
+      storage:
+        type: local
+        local:
+          directory: /rules
+      rule_path: /tmp/scratch
+      alertmanager_url: http://unoplat-observability-prom-alertmanager.unoplat-observability.svc.cluster.local:9093
+      enable_api: true                  
 
 promtail:
   resources:
     limits:
-      cpu: 1000m
+      cpu: 500m
       memory: 512Mi
     requests:
-      cpu: 500m
+      cpu: 100m
       memory: 128Mi
   enabled: true
   config:
@@ -154,7 +166,7 @@ promtail:
       null
       # -- Prometheus rules will be deployed for alerting purposes
     prometheusRule:
-      enabled: true
+      enabled: false
       additionalLabels: {}
       # namespace:
       rules:
