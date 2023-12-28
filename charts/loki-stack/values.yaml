@@ -35,10 +35,6 @@ loki:
     requests:
       cpu: "1"
       memory: "1Gi"   
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
-    reloader.stakater.com/search: "true"
   affinity:
   podAntiAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
