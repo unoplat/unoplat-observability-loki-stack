@@ -10,4 +10,4 @@ maintainers:
 name: unoplat-observability-loki-stack
 sources:
 - https://github.com/grafana/loki
-version: 2.10.13-dev
+version: 2.11.13-dev
