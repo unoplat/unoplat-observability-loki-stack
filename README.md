@@ -16,6 +16,7 @@
 - [ ] Cloud Native Cost Monitoring
 - [ ] IAM Support
 - [ ] Externalised through Emissary for Easy Access
+- [ ] Enable Automatic PVC resizing when goes beyond user threshold
   
 #### DevSecOps
   - [ ] Container Security Powered by Trivy (refer -> https://aquasecurity.github.io/trivy/v0.48/ to understand what is covered in those scans)
